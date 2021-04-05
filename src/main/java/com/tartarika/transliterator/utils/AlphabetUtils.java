@@ -1,7 +1,5 @@
 package com.tartarika.transliterator.utils;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
