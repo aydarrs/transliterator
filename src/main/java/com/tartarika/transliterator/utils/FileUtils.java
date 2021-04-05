@@ -13,9 +13,7 @@ import java.util.Properties;
  *
  * @author Aydar_Safiullin
  */
-public enum FileUtils {
-    FILE_UTILS;
-
+public class FileUtils {
     protected static final Properties FILE_PROPERTIES;
     private static final String RESOURCE_PATH;
 
@@ -30,6 +28,8 @@ public enum FileUtils {
             // TODO: 03.04.2021 handle this exception + may be add a PropertiesNotFoundException?
         }
     }
+
+    private FileUtils() {}
 
     /**
      * Latin - cyrillic letters matching file getting method.

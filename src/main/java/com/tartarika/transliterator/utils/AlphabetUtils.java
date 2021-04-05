@@ -1,8 +1,11 @@
 package com.tartarika.transliterator.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * AlphabetUtils.
@@ -10,9 +13,7 @@ import java.util.*;
  *
  * @author Aydar_Safiullin
  */
-public enum AlphabetUtils {
-    ALPHABET_UTILS;
-
+public class AlphabetUtils {
     private static Properties latinAlphabet;
     private static Properties cyrillicAlphabet;
 
@@ -29,6 +30,54 @@ public enum AlphabetUtils {
         } catch (IOException e) {
             // TODO: 03.04.2021 handle this exception + may be add a PropertiesNotFoundException?
         }
+    }
+
+    private AlphabetUtils() {}
+
+    /**
+     * Convert cyrillic text to latin.
+     * @param cyrillicText - original text.
+     * @return converted latin text.
+     */
+    public static String convertToLatinLetters(String cyrillicText) {
+        return getSymbols(cyrillicText).stream()
+                .map(originalSymbol -> {
+                    String latinSymbol = cyrillicAlphabet.getProperty(originalSymbol);
+                    if (null != latinSymbol) {
+                        return latinSymbol;
+                    }
+                    return originalSymbol;
+                }).collect(Collectors.joining());
+    }
+
+    /**
+     * Convert latin text to cyrillic.
+     * @param latinText - original text.
+     * @return converted cyrillic text.
+     */
+    public static String convertToCyrillicLetters(String latinText) {
+        return getSymbols(latinText).stream()
+                .map(originalSymbol -> {
+                    String cyrillicSymbol = latinAlphabet.getProperty(originalSymbol);
+                    if (null != cyrillicSymbol) {
+                        return cyrillicSymbol;
+                    }
+                    return originalSymbol;
+                }).collect(Collectors.joining());
+    }
+
+    /**
+     * Convert text to symbols collection.
+     * @param sourceText - original text.
+     * @return collection of original symbols.
+     */
+    private static List<String> getSymbols(String sourceText) {
+        List<String> result = new ArrayList<>();
+        char[] symbols = sourceText.toCharArray();
+        for (char symbol : symbols) {
+            result.add(String.valueOf(symbol));
+        }
+        return result;
     }
 
 }
