@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transliterator</title>
+</head>
+<body>
+<div>
+    <form action="/transliterator/changed" method="post">
+        <label for="sourceText"/>
+        <textarea rows="7" id="sourceText" name="sourceText" th:text="${source}"></textarea>
+        <button type="submit">Change</button>
+    </form>
+</div>
+<br>
+<div>
+    <textarea rows="7" th:text="${converted}"></textarea>
+</div>
+</body>
+</html>
