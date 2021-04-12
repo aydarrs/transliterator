@@ -1,7 +1,5 @@
 package com.tartarika.transliterator.utils;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -70,12 +68,7 @@ public class AlphabetUtils {
             }
 
             String latinSymbol = cyrillicAlphabet.getProperty(currentSymbol);
-            if (null != latinSymbol) {
-                joiner.add(latinSymbol);
-
-            } else {
-                joiner.add(currentSymbol);
-            }
+            joiner.add(Objects.requireNonNullElse(latinSymbol, currentSymbol));
         }
 
         return joiner.toString();
