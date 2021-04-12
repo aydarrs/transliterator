@@ -67,6 +67,10 @@ public class FileUtils {
         return new File(RESOURCE_PATH + specificTatarLettersPath);
     }
 
+    /**
+     * Cyrillic vowel letters file getting method.
+     * @return file with cyrillic vowels.
+     */
     public static File getVowelsProperties() {
         String vowelsPath = FILE_PROPERTIES.getProperty("vowels");
         if (StringUtils.isEmpty(vowelsPath)) {
