@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * MainController.
+ * TransliteratorController.
  *
  * @author Aydar_Safiullin
  */
 @Controller
 @RequestMapping("/transliterator")
-public class MainController {
+public class TransliteratorController {
     private String source;
     private String converted;
 
@@ -31,7 +31,7 @@ public class MainController {
 
     @PostMapping("/changed")
     public String convertToLatinLetters(Model model, @RequestParam String sourceText) {
-        String latinText = AlphabetUtils.convertToLatinLetters(sourceText);
+        String latinText = AlphabetUtils.convertTextToLatinWriting(sourceText);
         source = sourceText;
         converted = latinText;
         return "redirect:/transliterator";

@@ -1,5 +1,7 @@
 package com.tartarika.transliterator.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -14,16 +16,25 @@ import java.util.stream.Collectors;
 public class AlphabetUtils {
     private static Properties latinAlphabet;
     private static Properties cyrillicAlphabet;
+    private static Properties specificLetters;
+    private static Properties vowels;
 
     static {
         try(FileReader latinAlphabetReader = new FileReader(FileUtils.getLatinAlphabet());
-            FileReader cyrillicAlphabetReader = new FileReader(FileUtils.getCyrillicAlphabet())) {
+            FileReader cyrillicAlphabetReader = new FileReader(FileUtils.getCyrillicAlphabet());
+            FileReader specificLettersReader = new FileReader(FileUtils.getSpecificTatarLetters());
+            FileReader vowelsReader = new FileReader(FileUtils.getVowelsProperties())) {
 
             latinAlphabet = new Properties();
             cyrillicAlphabet = new Properties();
+            specificLetters = new Properties();
+            vowels = new Properties();
 
             latinAlphabet.load(latinAlphabetReader);
             cyrillicAlphabet.load(cyrillicAlphabetReader);
+            specificLetters.load(specificLettersReader);
+            vowels.load(vowelsReader);
+
 
         } catch (IOException e) {
             // TODO: 03.04.2021 handle this exception + may be add a PropertiesNotFoundException?
@@ -37,15 +48,52 @@ public class AlphabetUtils {
      * @param cyrillicText - original text.
      * @return converted latin text.
      */
-    public static String convertToLatinLetters(String cyrillicText) {
-        return getSymbols(cyrillicText).stream()
-                .map(originalSymbol -> {
-                    String latinSymbol = cyrillicAlphabet.getProperty(originalSymbol);
-                    if (null != latinSymbol) {
-                        return latinSymbol;
-                    }
-                    return originalSymbol;
-                }).collect(Collectors.joining());
+    public static String convertTextToLatinWriting(String cyrillicText) {
+        StringJoiner joiner = new StringJoiner("");
+        List<String> symbols = getSymbols(cyrillicText);
+
+        for (int i = 0; i < symbols.size(); i++) {
+            String currentSymbol = symbols.get(i);
+            String previousSymbol = null;
+            String nextSymbol = null;
+
+            if (currentSymbol.equalsIgnoreCase("в")) {
+                if (i != 0) {
+                    previousSymbol = symbols.get(i - 1);
+                }
+                if (i < symbols.size() - 1) {
+                    nextSymbol = symbols.get(i + 1);
+                }
+                String latinV = convertV(previousSymbol, currentSymbol, nextSymbol);
+                joiner.add(latinV);
+                continue;
+            }
+
+            String latinSymbol = cyrillicAlphabet.getProperty(currentSymbol);
+            if (null != latinSymbol) {
+                joiner.add(latinSymbol);
+
+            } else {
+                joiner.add(currentSymbol);
+            }
+        }
+
+        return joiner.toString();
+    }
+
+    /**
+     * Convert cyrillic "В" letter to latin by rules of Tatar language.
+     * @param previousSymbol - previous symbol;
+     * @param currentSymbol - current symbol;
+     * @param nextSymbol - next symbol;
+     * @return converted symbol.
+     */
+    private static String convertV(String previousSymbol, String currentSymbol, String nextSymbol) {
+        if (null == previousSymbol || null == nextSymbol || vowels.containsKey(nextSymbol)) {
+            return specificLetters.getProperty(currentSymbol);
+        }
+
+        return latinAlphabet.getProperty(currentSymbol);
     }
 
     /**
@@ -53,7 +101,7 @@ public class AlphabetUtils {
      * @param latinText - original text.
      * @return converted cyrillic text.
      */
-    public static String convertToCyrillicLetters(String latinText) {
+    public static String convertTextToCyrillicLetters(String latinText) {
         return getSymbols(latinText).stream()
                 .map(originalSymbol -> {
                     String cyrillicSymbol = latinAlphabet.getProperty(originalSymbol);

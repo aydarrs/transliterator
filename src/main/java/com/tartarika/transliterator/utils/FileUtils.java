@@ -54,4 +54,24 @@ public class FileUtils {
         }
         return new File(RESOURCE_PATH + cyrillicAlphabetPath);
     }
+
+    /**
+     * Specific tatar letters matching file getting method.
+     * @return file with specific tatar letters.
+     */
+    public static File getSpecificTatarLetters() {
+        String specificTatarLettersPath = FILE_PROPERTIES.getProperty("specificTatarLetters");
+        if (StringUtils.isEmpty(specificTatarLettersPath)) {
+            // TODO: 03.04.2021 what doing if property not found?
+        }
+        return new File(RESOURCE_PATH + specificTatarLettersPath);
+    }
+
+    public static File getVowelsProperties() {
+        String vowelsPath = FILE_PROPERTIES.getProperty("vowels");
+        if (StringUtils.isEmpty(vowelsPath)) {
+            // TODO: 03.04.2021 what doing if property not found?
+        }
+        return new File(RESOURCE_PATH + vowelsPath);
+    }
 }
