@@ -1,4 +1,8 @@
-package com.tartarika.transliterator.utils;
+package com.tartarika.transliterator.service;
+
+import com.tartarika.transliterator.utils.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -6,47 +10,41 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * AlphabetUtils.
- * App main utils for work with alphabets.
+ * GeneralAlphabetService.
+ * App main service for work with alphabets.
  *
  * @author Aydar_Safiullin
  */
-public class AlphabetUtils {
-    private static Properties latinAlphabet;
-    private static Properties cyrillicAlphabet;
-    private static Properties specificLetters;
-    private static Properties vowels;
+@Component
+public class GeneralAlphabetService {
+    private Properties latinAlphabet;
+    private Properties cyrillicAlphabet;
+    private SpecificTatarLettersService specificLettersService;
 
-    static {
+    @Autowired
+    GeneralAlphabetService(SpecificTatarLettersService service) {
         try(FileReader latinAlphabetReader = new FileReader(FileUtils.getLatinAlphabet());
-            FileReader cyrillicAlphabetReader = new FileReader(FileUtils.getCyrillicAlphabet());
-            FileReader specificLettersReader = new FileReader(FileUtils.getSpecificTatarLetters());
-            FileReader vowelsReader = new FileReader(FileUtils.getVowelsProperties())) {
+            FileReader cyrillicAlphabetReader = new FileReader(FileUtils.getCyrillicAlphabet())) {
 
             latinAlphabet = new Properties();
             cyrillicAlphabet = new Properties();
-            specificLetters = new Properties();
-            vowels = new Properties();
 
             latinAlphabet.load(latinAlphabetReader);
             cyrillicAlphabet.load(cyrillicAlphabetReader);
-            specificLetters.load(specificLettersReader);
-            vowels.load(vowelsReader);
 
+            this.specificLettersService = service;
 
         } catch (IOException e) {
             // TODO: 03.04.2021 handle this exception + may be add a PropertiesNotFoundException?
         }
     }
 
-    private AlphabetUtils() {}
-
-    /**
+        /**
      * Convert cyrillic text to latin.
      * @param cyrillicText - original text.
      * @return converted latin text.
      */
-    public static String convertTextToLatinWriting(String cyrillicText) {
+    public String convertTextToLatinWriting(String cyrillicText) {
         StringJoiner joiner = new StringJoiner("");
         List<String> symbols = getSymbols(cyrillicText);
 
@@ -62,7 +60,7 @@ public class AlphabetUtils {
                 if (i < symbols.size() - 1) {
                     nextSymbol = symbols.get(i + 1);
                 }
-                String latinV = convertV(previousSymbol, currentSymbol, nextSymbol);
+                String latinV = specificLettersService.convertV(previousSymbol, currentSymbol, nextSymbol);
                 joiner.add(latinV);
                 continue;
             }
@@ -75,26 +73,11 @@ public class AlphabetUtils {
     }
 
     /**
-     * Convert cyrillic "В" letter to latin by rules of Tatar language.
-     * @param previousSymbol - previous symbol;
-     * @param currentSymbol - current symbol;
-     * @param nextSymbol - next symbol;
-     * @return converted symbol.
-     */
-    private static String convertV(String previousSymbol, String currentSymbol, String nextSymbol) {
-        if (null == previousSymbol || null == nextSymbol || vowels.containsKey(nextSymbol)) {
-            return specificLetters.getProperty(currentSymbol);
-        }
-
-        return latinAlphabet.getProperty(currentSymbol);
-    }
-
-    /**
      * Convert latin text to cyrillic.
      * @param latinText - original text.
      * @return converted cyrillic text.
      */
-    public static String convertTextToCyrillicLetters(String latinText) {
+    public String convertTextToCyrillicLetters(String latinText) {
         return getSymbols(latinText).stream()
                 .map(originalSymbol -> {
                     String cyrillicSymbol = latinAlphabet.getProperty(originalSymbol);
@@ -110,7 +93,7 @@ public class AlphabetUtils {
      * @param sourceText - original text.
      * @return collection of original symbols.
      */
-    private static List<String> getSymbols(String sourceText) {
+    private List<String> getSymbols(String sourceText) {
         List<String> result = new ArrayList<>();
         char[] symbols = sourceText.toCharArray();
         for (char symbol : symbols) {
