@@ -39,7 +39,7 @@ public class GeneralAlphabetService {
         }
     }
 
-        /**
+    /**
      * Convert cyrillic text to latin.
      * @param cyrillicText - original text.
      * @return converted latin text.
