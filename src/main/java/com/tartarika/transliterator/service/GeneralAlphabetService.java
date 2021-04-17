@@ -1,5 +1,6 @@
 package com.tartarika.transliterator.service;
 
+import com.tartarika.transliterator.exceptions.SourceTextIsNullException;
 import com.tartarika.transliterator.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,7 @@ public class GeneralAlphabetService {
     private SpecificTatarLettersService specificLettersService;
 
     @Autowired
-    GeneralAlphabetService(SpecificTatarLettersService service) {
+    public GeneralAlphabetService(SpecificTatarLettersService service) {
         try(FileReader latinAlphabetReader = new FileReader(FileUtils.getLatinAlphabet());
             FileReader cyrillicAlphabetReader = new FileReader(FileUtils.getCyrillicAlphabet())) {
 
@@ -45,6 +46,10 @@ public class GeneralAlphabetService {
      * @return converted latin text.
      */
     public String convertTextToLatinWriting(String cyrillicText) {
+        if (cyrillicText == null) {
+            throw new SourceTextIsNullException();
+        }
+
         StringJoiner joiner = new StringJoiner("");
         List<String> symbols = getSymbols(cyrillicText);
 
@@ -77,7 +82,11 @@ public class GeneralAlphabetService {
      * @param latinText - original text.
      * @return converted cyrillic text.
      */
-    public String convertTextToCyrillicLetters(String latinText) {
+    public String convertTextToCyrillicWriting(String latinText) {
+        if (latinText == null) {
+            throw new SourceTextIsNullException();
+        }
+
         return getSymbols(latinText).stream()
                 .map(originalSymbol -> {
                     String cyrillicSymbol = latinAlphabet.getProperty(originalSymbol);

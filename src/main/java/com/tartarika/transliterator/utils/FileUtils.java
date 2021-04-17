@@ -67,15 +67,16 @@ public class FileUtils {
         return new File(RESOURCE_PATH + specificTatarLettersPath);
     }
 
+    //todo: change description
     /**
      * Cyrillic vowel letters file getting method.
      * @return file with cyrillic vowels.
      */
-    public static File getVowelsProperties() {
-        String vowelsPath = FILE_PROPERTIES.getProperty("vowels");
-        if (StringUtils.isEmpty(vowelsPath)) {
+    public static File getConditionProperties() {
+        String conditionsPath = FILE_PROPERTIES.getProperty("conditions");
+        if (StringUtils.isEmpty(conditionsPath)) {
             // TODO: 03.04.2021 what doing if property not found?
         }
-        return new File(RESOURCE_PATH + vowelsPath);
+        return new File(RESOURCE_PATH + conditionsPath);
     }
 }

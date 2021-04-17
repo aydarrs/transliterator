@@ -14,22 +14,22 @@ import java.util.Properties;
  */
 @Component
 public class SpecificTatarLettersService {
-    private Properties latinAlphabet;
+    private Properties cyrillicAlphabet;
     private Properties specificLetters;
-    private Properties vowels;
+    private Properties conditions;
 
     public SpecificTatarLettersService() {
-        try(FileReader latinAlphabetReader = new FileReader(FileUtils.getLatinAlphabet());
+        try(FileReader cyrillicAlphabetReader = new FileReader(FileUtils.getCyrillicAlphabet());
             FileReader specificLettersReader = new FileReader(FileUtils.getSpecificTatarLetters());
-            FileReader vowelsReader = new FileReader(FileUtils.getVowelsProperties())) {
+            FileReader conditionsReader = new FileReader(FileUtils.getConditionProperties())) {
 
-            latinAlphabet = new Properties();
+            cyrillicAlphabet = new Properties();
             specificLetters = new Properties();
-            vowels = new Properties();
+            conditions = new Properties();
 
-            latinAlphabet.load(latinAlphabetReader);
-            specificLetters.        load(specificLettersReader);
-            vowels.load(vowelsReader);
+            cyrillicAlphabet.load(cyrillicAlphabetReader);
+            specificLetters.load(specificLettersReader);
+            conditions.load(conditionsReader);
 
         } catch (IOException e) {
             // TODO: 03.04.2021 handle this exception + may be add a PropertiesNotFoundException?
@@ -38,16 +38,25 @@ public class SpecificTatarLettersService {
 
     /**
      * Convert cyrillic "В" letter to latin by rules of Tatar language.
-     * @param previousSymbol - previous symbol;
      * @param currentSymbol - current symbol;
      * @param nextSymbol - next symbol;
      * @return converted symbol.
      */
     protected String convertV(String previousSymbol, String currentSymbol, String nextSymbol) {
-        if (null == previousSymbol || null == nextSymbol || vowels.containsKey(nextSymbol)) {
+        String vowels = conditions.get("vowels").toString();
+        if (null == nextSymbol && vowels.contains(previousSymbol)) {
+                return specificLetters.getProperty(currentSymbol);
+
+        }
+
+        if (null !=nextSymbol && vowels.contains(nextSymbol)) {
             return specificLetters.getProperty(currentSymbol);
         }
 
-        return latinAlphabet.getProperty(currentSymbol);
+        return cyrillicAlphabet.getProperty(currentSymbol);
+    }
+
+    protected String convertGAndK(String previousSymbol, String currentSymbol, String nextSymbol) {
+        return cyrillicAlphabet.getProperty(currentSymbol);
     }
 }
