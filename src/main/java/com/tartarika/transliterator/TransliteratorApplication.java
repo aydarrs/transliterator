@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class TransliteratorApplication {
     // TODO: 17.04.2021 add message property file
+    // TODO: 17.04.2021 add developer branch
 
     public static void main(String[] args) {
         SpringApplication.run(TransliteratorApplication.class, args);
