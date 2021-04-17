@@ -11,40 +11,39 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author Aydar_Safiullin
  */
-public class GeneralAlphabetTestService {
-    private GeneralAlphabetService testedService;
+public class TatarConvertingServiceTest {
+    private LatinService testedService;
 
     @BeforeEach
-    void init() {
-        SpecificTatarLettersService helperService = new SpecificTatarLettersService();
-        testedService = new GeneralAlphabetService(helperService);
+    public void init() {
+        testedService = new TatarConvertingService();
     }
 
     @Test
     public void testFailConvertingToLatinByNullSourceText() {
         String sourceText = null;
-        assertThrows(SourceTextIsNullException.class, () -> testedService.convertTextToLatinWriting(null));
+        assertThrows(SourceTextIsNullException.class, () -> testedService.convertToLatin(null));
     }
 
     @Test
     public void testFailConvertingToCyrillicByNullSourceText() {
         String sourceText = null;
-        assertThrows(SourceTextIsNullException.class, () -> testedService.convertTextToCyrillicWriting(null));
+        assertThrows(SourceTextIsNullException.class, () -> testedService.convertToCyrillic(null));
     }
 
     @Test
     public void testIsCyrillicTextWithoutSpecificLettersConvertingCorrect() {
         String sourceText = "Матур бала ";
-        String expectedText = "Matur bala";
-        String resultText = testedService.convertTextToLatinWriting(sourceText);
+        String expectedText = "Matur bala ";
+        String resultText = testedService.convertToLatin(sourceText);
         assertEquals(expectedText, resultText);
     }
 
     @Test
-    public void testIsCyrillicTextWithoutSpecificLettersFailConvertingIncorrect() {
+    public void testIsCyrillicTextWithoutSpecificLettersConvertingIncorrect() {
         String sourceText = "Матур bala";
         String expectedText = "matur bala";
-        String resultText = testedService.convertTextToLatinWriting(sourceText);
+        String resultText = testedService.convertToLatin(sourceText);
         assertNotEquals(expectedText, resultText);
     }
 
@@ -52,7 +51,7 @@ public class GeneralAlphabetTestService {
     public void testIsVLetterContainsCyrillicTestConvertingCorrect() {
         String sourceText = "Вакыт авылда тиз бара";
         String expectedText = "Wakıt awılda tiz bara";
-        String resultText = testedService.convertTextToLatinWriting(sourceText);
+        String resultText = testedService.convertToLatin(sourceText);
         assertEquals(expectedText, resultText);
     }
 
@@ -60,7 +59,23 @@ public class GeneralAlphabetTestService {
     public void testIsVLetterContainsCyrillicTestConvertingIncorrect() {
         String sourceText = "Вакыт авылда тиз бара";
         String expectedText = "Vakıt avılda tiz bara";
-        String resultText = testedService.convertTextToLatinWriting(sourceText);
+        String resultText = testedService.convertToLatin(sourceText);
+        assertNotEquals(expectedText, resultText);
+    }
+
+    @Test
+    public void testIsLatinTextWithoutSpecificLetersConvertingCorrect() {
+        String sourceText = "Matur bala ";
+        String expectedText = "Матур бала ";
+        String resultText = testedService.convertToCyrillic(sourceText);
+        assertEquals(expectedText, resultText);
+    }
+
+    @Test
+    public void testIsLatinTextWithoutSpecificLettersConvertingIncorrect() {
+        String sourceText = "matur bala";
+        String expectedText = "Матур bala";
+        String resultText = testedService.convertToCyrillic(sourceText);
         assertNotEquals(expectedText, resultText);
     }
 

@@ -36,7 +36,7 @@ public class FileUtils {
      * @return file with latin letters.
      */
     public static File getLatinAlphabet() {
-        String latinAlphabetPath = FILE_PROPERTIES.getProperty("latinAlphabet");
+        String latinAlphabetPath = FILE_PROPERTIES.getProperty("tatarLatinAlphabet");
         if (StringUtils.isEmpty(latinAlphabetPath)) {
             // TODO: 03.04.2021 what doing if property not found?
         }
@@ -48,7 +48,7 @@ public class FileUtils {
      * @return file with cyrillic letters.
      */
     public static File getCyrillicAlphabet() {
-        String cyrillicAlphabetPath = FILE_PROPERTIES.getProperty("cyrillicAlphabet");
+        String cyrillicAlphabetPath = FILE_PROPERTIES.getProperty("tatarCyrillicAlphabet");
         if (StringUtils.isEmpty(cyrillicAlphabetPath)) {
             // TODO: 03.04.2021 what doing if property not found?
         }
@@ -60,7 +60,7 @@ public class FileUtils {
      * @return file with specific tatar letters.
      */
     public static File getSpecificTatarLetters() {
-        String specificTatarLettersPath = FILE_PROPERTIES.getProperty("specificTatarLetters");
+        String specificTatarLettersPath = FILE_PROPERTIES.getProperty("tatarSpecificLetters");
         if (StringUtils.isEmpty(specificTatarLettersPath)) {
             // TODO: 03.04.2021 what doing if property not found?
         }
@@ -73,7 +73,7 @@ public class FileUtils {
      * @return file with cyrillic vowels.
      */
     public static File getConditionProperties() {
-        String conditionsPath = FILE_PROPERTIES.getProperty("conditions");
+        String conditionsPath = FILE_PROPERTIES.getProperty("tatarRulesHelper");
         if (StringUtils.isEmpty(conditionsPath)) {
             // TODO: 03.04.2021 what doing if property not found?
         }
