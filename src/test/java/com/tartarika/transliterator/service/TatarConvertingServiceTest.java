@@ -21,6 +21,7 @@ public class TatarConvertingServiceTest {
         testedService = new TatarConvertingService();
     }
 
+    // General tests
     @Test
     public void testFailConvertingToLatinByNullSourceText() {
         String sourceText = null;
@@ -33,6 +34,7 @@ public class TatarConvertingServiceTest {
         assertThrows(SourceTextIsNullException.class, () -> testedService.convertToCyrillic(null));
     }
 
+    // Cyrillic text converting tests
     @Test
     public void testIsCyrillicTextWithoutSpecificLettersConvertingCorrect() {
         String sourceText = "Матур бала ";
@@ -50,7 +52,7 @@ public class TatarConvertingServiceTest {
     }
 
     @Test
-    public void testIsCyrillicVLetterConvertingCorrect() {
+    public void testIsCyrillicVLetterContainsTextConvertingCorrect() {
         String sourceText = "Вакыт авылда тиз бара";
         String expectedText = "Wakıt awılda tiz bara";
         String resultText = testedService.convertToLatin(sourceText);
@@ -58,12 +60,30 @@ public class TatarConvertingServiceTest {
     }
 
     @Test
-    public void testIsVLetterContainsCyrillicTestConvertingIncorrect() {
+    public void testIsCyrillicVLetterContainsTextConvertingIncorrect() {
         String sourceText = "Вакыт авылда тиз бара";
         String expectedText = "Vakıt avılda tiz bara";
         String resultText = testedService.convertToLatin(sourceText);
         assertNotEquals(expectedText, resultText);
     }
+
+    @Test
+    public void testIsCyrillicGLetterContainsTextConvertingCorrect() {
+        String sourceText = "Галим гөмбә";
+        String expectedText = "Ğalim gөmbä";
+        String resultText = testedService.convertToLatin(sourceText);
+        assertEquals(expectedText, resultText);
+    }
+
+    @Test
+    public void testIsCyrillicGLetterContainsTextConvertingInCorrect() {
+        String sourceText = "Галим гөмбә";
+        String expectedText = "Galim gömbä";
+        String resultText = testedService.convertToLatin(sourceText);
+        assertNotEquals(expectedText, resultText);
+    }
+
+    // Latin text converting tests
 
     @Test
     public void testIsLatinTextWithoutSpecificLettersConvertingCorrect() {
