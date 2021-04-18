@@ -1,18 +1,20 @@
 package com.tartarika.transliterator.service;
 
 import com.tartarika.transliterator.exceptions.SourceTextIsNullException;
+import com.tartarika.transliterator.service.latin.ILatinService;
+import com.tartarika.transliterator.service.latin.tatar.TatarConvertingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * GeneralAlphabetTestService.
+ * TatarConvertingServiceTest.
  *
  * @author Aydar_Safiullin
  */
 public class TatarConvertingServiceTest {
-    private LatinService testedService;
+    private ILatinService testedService;
 
     @BeforeEach
     public void init() {
@@ -48,7 +50,7 @@ public class TatarConvertingServiceTest {
     }
 
     @Test
-    public void testIsVLetterContainsCyrillicTestConvertingCorrect() {
+    public void testIsCyrillicVLetterConvertingCorrect() {
         String sourceText = "Вакыт авылда тиз бара";
         String expectedText = "Wakıt awılda tiz bara";
         String resultText = testedService.convertToLatin(sourceText);
@@ -64,7 +66,7 @@ public class TatarConvertingServiceTest {
     }
 
     @Test
-    public void testIsLatinTextWithoutSpecificLetersConvertingCorrect() {
+    public void testIsLatinTextWithoutSpecificLettersConvertingCorrect() {
         String sourceText = "Matur bala ";
         String expectedText = "Матур бала ";
         String resultText = testedService.convertToCyrillic(sourceText);

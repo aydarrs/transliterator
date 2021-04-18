@@ -2,6 +2,7 @@ package com.tartarika.transliterator.exceptions;
 
 /**
  * SourceTextIsNullException.
+ * Thrown, when source text is null.
  *
  * @author Aydar_Safiullin
  */

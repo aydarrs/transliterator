@@ -1,15 +1,11 @@
 package com.tartarika.transliterator.service;
 
-import com.tartarika.transliterator.exceptions.SourceTextIsNullException;
-import com.tartarika.transliterator.utils.FileUtils;
+import com.tartarika.transliterator.service.latin.tatar.TatarConvertingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * GeneralAlphabetService.
@@ -19,8 +15,6 @@ import java.util.stream.Collectors;
  */
 @Component
 public class GeneralAlphabetService {
-    private Properties latinAlphabet;
-    private Properties cyrillicAlphabet;
     private TatarConvertingService specificLettersService;
 
     @Autowired
@@ -30,17 +24,15 @@ public class GeneralAlphabetService {
 
     /**
      * Convert cyrillic text to latin.
-     *
      * @param cyrillicText - original text.
      * @return converted latin text.
      */
     public String convertTextToLatinWriting(String cyrillicText) {
-        return specificLettersService.convertToCyrillic(cyrillicText);
+        return specificLettersService.convertToLatin(cyrillicText);
     }
 
     /**
      * Convert latin text to cyrillic.
-     *
      * @param latinText - original text.
      * @return converted cyrillic text.
      */

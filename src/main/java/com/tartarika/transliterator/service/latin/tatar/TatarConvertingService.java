@@ -1,50 +1,30 @@
-package com.tartarika.transliterator.service;
+package com.tartarika.transliterator.service.latin.tatar;
 
 import com.tartarika.transliterator.exceptions.SourceTextIsNullException;
-import com.tartarika.transliterator.utils.FileUtils;
+import com.tartarika.transliterator.lang.AppLanguage;
+import com.tartarika.transliterator.service.latin.ILatinService;
+import com.tartarika.transliterator.service.latin.LatinService;
 import org.springframework.stereotype.Component;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Properties;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
+import static com.tartarika.transliterator.lang.AppLanguage.TATAR;
+
 /**
- * SpecificTatarLettersService.
- * Service for work with specific tatar letters.
+ * TatarConvertingService.
+ * {@link ILatinService} implementation for tatar language.
+ *
  * @author Aydar_Safiullin
  */
 @Component("Tatar")
-public class TatarConvertingService implements LatinService{
-    private Properties cyrillicAlphabet;
-    private Properties latinAlphabet;
-    private Properties specificLetters;
-    private Properties conditions;
+public class TatarConvertingService extends LatinService {
 
-    public TatarConvertingService() {
-        try(FileReader latinAlphabetReader = new FileReader(FileUtils.getLatinAlphabet());
-            FileReader cyrillicAlphabetReader = new FileReader(FileUtils.getCyrillicAlphabet());
-            FileReader specificLettersReader = new FileReader(FileUtils.getSpecificTatarLetters());
-            FileReader conditionsReader = new FileReader(FileUtils.getConditionProperties())) {
-
-            latinAlphabet = new Properties();
-            cyrillicAlphabet = new Properties();
-            specificLetters = new Properties();
-            conditions = new Properties();
-
-            latinAlphabet.load(latinAlphabetReader);
-            cyrillicAlphabet.load(cyrillicAlphabetReader);
-            specificLetters.load(specificLettersReader);
-            conditions.load(conditionsReader);
-
-        } catch (IOException e) {
-            // TODO: 03.04.2021 handle this exception + may be add a PropertiesNotFoundException?
-        }
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String convertToLatin(String sourceText) {
         if (sourceText == null) {
@@ -60,13 +40,10 @@ public class TatarConvertingService implements LatinService{
             String nextSymbol = null;
 
             if (currentSymbol.equalsIgnoreCase("в")) {
-                if (i != 0) {
-                    previousSymbol = symbols.get(i - 1);
-                }
                 if (i < symbols.size() - 1) {
                     nextSymbol = symbols.get(i + 1);
                 }
-                String latinV = convertV(previousSymbol, currentSymbol, nextSymbol);
+                String latinV = convertV(currentSymbol, nextSymbol);
                 joiner.add(latinV);
                 continue;
             }
@@ -78,6 +55,9 @@ public class TatarConvertingService implements LatinService{
         return joiner.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String convertToCyrillic(String sourceText) {
         if (sourceText == null) {
@@ -95,17 +75,22 @@ public class TatarConvertingService implements LatinService{
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AppLanguage getLanguage() {
+        return TATAR;
+    }
+
+    /**
      * Convert cyrillic "В" letter to latin by rules of Tatar language.
+     *
      * @param currentSymbol - current symbol;
      * @param nextSymbol - next symbol;
      * @return converted symbol.
      */
-    private String convertV(String previousSymbol, String currentSymbol, String nextSymbol) {
-        String vowels = conditions.get("vowels").toString();
-        if (null == nextSymbol && vowels.contains(previousSymbol)) {
-                return specificLetters.getProperty(currentSymbol);
-
-        }
+    private String convertV(String currentSymbol, String nextSymbol) {
+        String vowels = rulesHelper.get("vowels").toString();
 
         if (null !=nextSymbol && vowels.contains(nextSymbol)) {
             return specificLetters.getProperty(currentSymbol);
