@@ -76,9 +76,25 @@ public class TatarConvertingServiceTest {
     }
 
     @Test
-    public void testIsCyrillicGLetterContainsTextConvertingInCorrect() {
+    public void testIsCyrillicGLetterContainsTextConvertingIncorrect() {
         String sourceText = "Галим гөмбә";
         String expectedText = "Galim gömbä";
+        String resultText = testedService.convertToLatin(sourceText);
+        assertNotEquals(expectedText, resultText);
+    }
+
+    @Test
+    public void testIsCyrillicELetterContainsTextConvertingCorrect() {
+        String sourceText = "Елан ел быел";
+        String expectedText = "Yelan yel bıel";
+        String resultText = testedService.convertToLatin(sourceText);
+        assertEquals(expectedText, resultText);
+    }
+
+    @Test
+    public void testIsCyrillicELetterContainsTextConvertingIncorrect() {
+        String sourceText = "Елан ел быел";
+        String expectedText = "Yelan yel bıyel";
         String resultText = testedService.convertToLatin(sourceText);
         assertNotEquals(expectedText, resultText);
     }
