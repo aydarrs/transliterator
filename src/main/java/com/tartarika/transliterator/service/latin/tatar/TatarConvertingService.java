@@ -48,6 +48,27 @@ public class TatarConvertingService extends LatinService {
                 continue;
             }
 
+            if (currentSymbol.equalsIgnoreCase("к") || currentSymbol.equalsIgnoreCase("г")) {
+                if (i != 0) {
+                    previousSymbol = symbols.get(i - 1);
+                }
+                if (i < symbols.size() - 1) {
+                    nextSymbol = symbols.get(i + 1);
+                }
+                String latinGorK = convertGAndK(previousSymbol, currentSymbol, nextSymbol);
+                joiner.add(latinGorK);
+                continue;
+            }
+
+            if (currentSymbol.equalsIgnoreCase("е")) {
+                if (i != 0) {
+                    previousSymbol = symbols.get(i - 1);
+                }
+                String latinE = convertE(previousSymbol, currentSymbol);
+                joiner.add(latinE);
+                continue;
+            }
+
             String latinSymbol = cyrillicAlphabet.getProperty(currentSymbol);
             joiner.add(Objects.requireNonNullElse(latinSymbol, currentSymbol));
         }
@@ -100,6 +121,31 @@ public class TatarConvertingService extends LatinService {
     }
 
     private String convertGAndK(String previousSymbol, String currentSymbol, String nextSymbol) {
+        String softVowels = rulesHelper.get("softVowels").toString();
+        String hardVowels = rulesHelper.get("hardVowels").toString();
+
+        if (null != nextSymbol && hardVowels.contains(nextSymbol)) {
+            return specificLetters.getProperty(currentSymbol);
+        }
+
+        if (null != nextSymbol && null != previousSymbol && !hardVowels.contains(nextSymbol) && hardVowels.contains(previousSymbol)) {
+            return specificLetters.getProperty(currentSymbol);
+        }
+
+        if (null == nextSymbol && null != previousSymbol && hardVowels.contains(previousSymbol)) {
+            return specificLetters.getProperty(currentSymbol);
+        }
+
+        return cyrillicAlphabet.getProperty(currentSymbol);
+    }
+
+    private String convertE(String previousSymbol, String currentSymbol) {
+        String vowels = rulesHelper.get("vowels").toString();
+
+        if (null != previousSymbol && vowels.contains(previousSymbol)) {
+            return specificLetters.getProperty(currentSymbol);
+        }
+
         return cyrillicAlphabet.getProperty(currentSymbol);
     }
 }

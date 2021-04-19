@@ -54,7 +54,7 @@ public class TatarConvertingServiceTest {
     @Test
     public void testIsCyrillicVLetterContainsTextConvertingCorrect() {
         String sourceText = "Вакыт авылда тиз бара";
-        String expectedText = "Wakıt awılda tiz bara";
+        String expectedText = "Waqıt awılda tiz bara";
         String resultText = testedService.convertToLatin(sourceText);
         assertEquals(expectedText, resultText);
     }
@@ -62,7 +62,7 @@ public class TatarConvertingServiceTest {
     @Test
     public void testIsCyrillicVLetterContainsTextConvertingIncorrect() {
         String sourceText = "Вакыт авылда тиз бара";
-        String expectedText = "Vakıt avılda tiz bara";
+        String expectedText = "Vaqıt avılda tiz bara";
         String resultText = testedService.convertToLatin(sourceText);
         assertNotEquals(expectedText, resultText);
     }
@@ -70,7 +70,7 @@ public class TatarConvertingServiceTest {
     @Test
     public void testIsCyrillicGLetterContainsTextConvertingCorrect() {
         String sourceText = "Галим гөмбә";
-        String expectedText = "Ğalim gөmbä";
+        String expectedText = "Ğalim gömbä";
         String resultText = testedService.convertToLatin(sourceText);
         assertEquals(expectedText, resultText);
     }
@@ -95,6 +95,22 @@ public class TatarConvertingServiceTest {
     public void testIsCyrillicELetterContainsTextConvertingIncorrect() {
         String sourceText = "Елан ел быел";
         String expectedText = "Yelan yel bıyel";
+        String resultText = testedService.convertToLatin(sourceText);
+        assertNotEquals(expectedText, resultText);
+    }
+
+    @Test
+    public void testIsCyrillicKLetterContainsTextConvertingCorrect() {
+        String sourceText = "Калим көмбә";
+        String expectedText = "Qalim kömbä";
+        String resultText = testedService.convertToLatin(sourceText);
+        assertEquals(expectedText, resultText);
+    }
+
+    @Test
+    public void testIsCyrillicKLetterContainsTextConvertingIncorrect() {
+        String sourceText = "Калим көмбә";
+        String expectedText = "Kalim kömbä";
         String resultText = testedService.convertToLatin(sourceText);
         assertNotEquals(expectedText, resultText);
     }
