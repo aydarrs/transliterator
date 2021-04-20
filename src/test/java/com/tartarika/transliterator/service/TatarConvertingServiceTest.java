@@ -53,64 +53,97 @@ public class TatarConvertingServiceTest {
 
     @Test
     public void testIsCyrillicVLetterContainsTextConvertingCorrect() {
-        String sourceText = "Вакыт авылда тиз бара";
-        String expectedText = "Waqıt awılda tiz bara";
+        String sourceText = "Ава В вд Ви";
+        String expectedText = "Awa V vd Wi";
         String resultText = testedService.convertToLatin(sourceText);
         assertEquals(expectedText, resultText);
     }
 
     @Test
     public void testIsCyrillicVLetterContainsTextConvertingIncorrect() {
-        String sourceText = "Вакыт авылда тиз бара";
-        String expectedText = "Vaqıt avılda tiz bara";
+        String sourceText = "Ава В вд Ви";
+        String expectedText = "Ava V vd Vi";
         String resultText = testedService.convertToLatin(sourceText);
         assertNotEquals(expectedText, resultText);
     }
 
     @Test
     public void testIsCyrillicGLetterContainsTextConvertingCorrect() {
-        String sourceText = "Галим гөмбә";
-        String expectedText = "Ğalim gömbä";
+        String sourceText = "Рги рга Га Г иго";
+        String expectedText = "Rgi rğa Ğa G iğo";
         String resultText = testedService.convertToLatin(sourceText);
         assertEquals(expectedText, resultText);
     }
 
     @Test
     public void testIsCyrillicGLetterContainsTextConvertingIncorrect() {
-        String sourceText = "Галим гөмбә";
-        String expectedText = "Galim gömbä";
+        String sourceText = "Рги рга Га Г иго";
+        String expectedText = "Rgi rga Ga G igo";
         String resultText = testedService.convertToLatin(sourceText);
         assertNotEquals(expectedText, resultText);
     }
 
     @Test
     public void testIsCyrillicELetterContainsTextConvertingCorrect() {
-        String sourceText = "Елан ел быел";
-        String expectedText = "Yelan yel bıel";
+        String sourceText = "Ела аел бел";
+        String expectedText = "Yela ayel bel";
         String resultText = testedService.convertToLatin(sourceText);
         assertEquals(expectedText, resultText);
     }
 
     @Test
     public void testIsCyrillicELetterContainsTextConvertingIncorrect() {
-        String sourceText = "Елан ел быел";
-        String expectedText = "Yelan yel bıyel";
+        String sourceText = "Ела аел бел";
+        String expectedText = "Yela ayel byel";
         String resultText = testedService.convertToLatin(sourceText);
         assertNotEquals(expectedText, resultText);
     }
 
     @Test
     public void testIsCyrillicKLetterContainsTextConvertingCorrect() {
-        String sourceText = "Калим көмбә";
-        String expectedText = "Qalim kömbä";
+        String sourceText = "Рки рка Ка К ико икр ик Ок окл";
+        String expectedText = "Rki rqa Qa K iqo ikr ik Oq oql";
         String resultText = testedService.convertToLatin(sourceText);
         assertEquals(expectedText, resultText);
     }
 
     @Test
     public void testIsCyrillicKLetterContainsTextConvertingIncorrect() {
-        String sourceText = "Калим көмбә";
-        String expectedText = "Kalim kömbä";
+        String sourceText = "Рки рка Ка К ико икр ик Ок окл";
+        String expectedText = "Rki rka Ka K iko ikr ik Ok okl";
+        String resultText = testedService.convertToLatin(sourceText);
+        assertNotEquals(expectedText, resultText);
+    }
+
+    // TODO: 20.04.2021 Я and Ю
+    @Test
+    public void testIsCyrillicYuLetterContainsTextConvertingCorrect() {
+        String sourceText = "Юл юлти Юлта юти Июли ию Аю";
+        String expectedText = "Yul yülti Yulta yüti İyüli iyü Ayu";
+        String resultText = testedService.convertToLatin(sourceText);
+        assertEquals(expectedText, resultText);
+    }
+
+    @Test
+    public void testIsCyrillicYuLetterContainsTextConvertingIncorrect() {
+        String sourceText = "Юл юлти Юлта юти Июли ию Аю";
+        String expectedText = "Yul yulti Yulta yuti İyuli iyu Ayu";
+        String resultText = testedService.convertToLatin(sourceText);
+        assertNotEquals(expectedText, resultText);
+    }
+
+    @Test
+    public void testIsCyrillicYaLetterContainsTextConvertingCorrect() {
+        String sourceText = "Ял ялти Ялта яти Ияли ия Ая";
+        String expectedText = "Yal yälti Yalta yäti İyäli iyä Aya";
+        String resultText = testedService.convertToLatin(sourceText);
+        assertEquals(expectedText, resultText);
+    }
+
+    @Test
+    public void testIsCyrillicYaLetterContainsTextConvertingIncorrect() {
+        String sourceText = "Ял ялти Ялта яти Ияли ия Ая";
+        String expectedText = "Yal yalti Yalta yati İyali iya Aya";
         String resultText = testedService.convertToLatin(sourceText);
         assertNotEquals(expectedText, resultText);
     }
