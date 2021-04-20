@@ -120,31 +120,32 @@ public class TatarConvertingService extends LatinService {
         return cyrillicAlphabet.getProperty(currentSymbol);
     }
 
-    private String convertGAndK(String previousSymbol, String currentSymbol, String nextSymbol) {
-        String softVowels = rulesHelper.get("softVowels").toString();
-        String hardVowels = rulesHelper.get("hardVowels").toString();
+    private String convertE(String previousSymbol, String currentSymbol) {
+        String vowels = rulesHelper.get("vowels").toString();
 
-        if (null != nextSymbol && hardVowels.contains(nextSymbol)) {
-            return specificLetters.getProperty(currentSymbol);
-        }
-
-        if (null != nextSymbol && null != previousSymbol && !hardVowels.contains(nextSymbol) && hardVowels.contains(previousSymbol)) {
-            return specificLetters.getProperty(currentSymbol);
-        }
-
-        if (null == nextSymbol && null != previousSymbol && hardVowels.contains(previousSymbol)) {
+        if (null != previousSymbol && !vowels.contains(previousSymbol)) {
             return specificLetters.getProperty(currentSymbol);
         }
 
         return cyrillicAlphabet.getProperty(currentSymbol);
     }
 
-    private String convertE(String previousSymbol, String currentSymbol) {
+    private String convertGAndK(String previousSymbol, String currentSymbol, String nextSymbol) {
         String vowels = rulesHelper.get("vowels").toString();
+        String hardVowels = rulesHelper.get("hardVowels").toString();
 
-        if (null != previousSymbol && vowels.contains(previousSymbol)) {
+        if (null != nextSymbol && hardVowels.contains(nextSymbol)) {
             return specificLetters.getProperty(currentSymbol);
         }
+
+        if (null != nextSymbol && !vowels.contains(nextSymbol) && null == previousSymbol) {
+            return specificLetters.getProperty(currentSymbol);
+        }
+
+        if (null != nextSymbol && !vowels.contains(nextSymbol) && null != previousSymbol && hardVowels.contains(previousSymbol)) {
+            return specificLetters.getProperty(currentSymbol);
+        }
+
 
         return cyrillicAlphabet.getProperty(currentSymbol);
     }

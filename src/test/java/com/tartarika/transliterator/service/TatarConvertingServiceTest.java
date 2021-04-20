@@ -115,7 +115,6 @@ public class TatarConvertingServiceTest {
         assertNotEquals(expectedText, resultText);
     }
 
-    // TODO: 20.04.2021 Я and Ю
     @Test
     public void testIsCyrillicYuLetterContainsTextConvertingCorrect() {
         String sourceText = "Юл юлти Юлта юти Июли ию Аю";
