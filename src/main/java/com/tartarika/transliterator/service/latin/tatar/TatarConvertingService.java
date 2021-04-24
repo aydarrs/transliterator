@@ -21,6 +21,8 @@ import static com.tartarika.transliterator.lang.AppLanguage.TATAR;
  */
 @Component("Tatar")
 public class TatarConvertingService extends LatinService {
+    private static final String VOWELS = "vowels";
+    private static final String HARD_VOWELS = "hardVowels";
 
     /**
      * {@inheritDoc}
@@ -35,42 +37,16 @@ public class TatarConvertingService extends LatinService {
         List<String> symbols = getSymbols(sourceText);
 
         for (int i = 0; i < symbols.size(); i++) {
-            String currentSymbol = symbols.get(i);
-            String previousSymbol = null;
-            String nextSymbol = null;
+            String latinSymbol;
+            if (specificLetters.containsKey(symbols.get(i))) {
+                latinSymbol = convertSpecificCyrillicTatarLetter(i, symbols);
 
-            if (currentSymbol.equalsIgnoreCase("в")) {
-                if (i < symbols.size() - 1) {
-                    nextSymbol = symbols.get(i + 1);
-                }
-                String latinV = convertV(currentSymbol, nextSymbol);
-                joiner.add(latinV);
-                continue;
+            } else {
+                latinSymbol = cyrillicAlphabet.getProperty(symbols.get(i));
+
             }
 
-            if (currentSymbol.equalsIgnoreCase("к") || currentSymbol.equalsIgnoreCase("г")) {
-                if (i != 0) {
-                    previousSymbol = symbols.get(i - 1);
-                }
-                if (i < symbols.size() - 1) {
-                    nextSymbol = symbols.get(i + 1);
-                }
-                String latinGorK = convertGAndK(previousSymbol, currentSymbol, nextSymbol);
-                joiner.add(latinGorK);
-                continue;
-            }
-
-            if (currentSymbol.equalsIgnoreCase("е")) {
-                if (i != 0) {
-                    previousSymbol = symbols.get(i - 1);
-                }
-                String latinE = convertE(previousSymbol, currentSymbol);
-                joiner.add(latinE);
-                continue;
-            }
-
-            String latinSymbol = cyrillicAlphabet.getProperty(currentSymbol);
-            joiner.add(Objects.requireNonNullElse(latinSymbol, currentSymbol));
+            joiner.add(Objects.requireNonNullElse(latinSymbol, symbols.get(i)));
         }
 
         return joiner.toString();
@@ -104,6 +80,66 @@ public class TatarConvertingService extends LatinService {
     }
 
     /**
+     * Convert specific tatar letters from cyrillic alphabet to latin.
+     *
+     * @param index - current symbol index.
+     * @param symbols - list of text symbols.
+     * @return - converted symbol.
+     */
+    private String convertSpecificCyrillicTatarLetter(int index, List<String> symbols) {
+        String currentSymbol = symbols.get(index);
+        String latinSymbol = null;
+        switch (currentSymbol.toUpperCase()) {
+            case "В":
+                latinSymbol = convertV(currentSymbol, getNextSymbol(index, symbols));
+                break;
+            case "Г":
+            case "К":
+                latinSymbol = convertGOrK(getPreviousSymbol(index, symbols), currentSymbol, getNextSymbol(index, symbols));
+                break;
+            case "Е":
+                latinSymbol = convertE(getPreviousSymbol(index, symbols), currentSymbol);
+                break;
+            case "Ю":
+            case "Я":
+                latinSymbol = convertYaOrYu();
+                break;
+            default:
+        }
+        return latinSymbol;
+    }
+
+    /**
+     * Method for get next symbol in the text.
+     *
+     * @param index - current symbol index.
+     * @param symbols - list of text symbols.
+     * @return next symbol in list.
+     */
+    private String getNextSymbol(int index, List<String> symbols) {
+        String nextSymbol = null;
+        if (index < symbols.size() - 1) {
+            nextSymbol = symbols.get(index + 1);
+        }
+        return nextSymbol;
+    }
+
+    /**
+     * Method for get previous symbol in the text.
+     *
+     * @param index - current symbol index.
+     * @param symbols - list of text symbols.
+     * @return previous symbol in list.
+     */
+    private String getPreviousSymbol(int index, List<String> symbols) {
+        String previousSymbol = null;
+        if (index != 0) {
+            previousSymbol = symbols.get(index - 1);
+        }
+        return previousSymbol;
+    }
+
+    /**
      * Convert cyrillic "В" letter to latin by rules of Tatar language.
      *
      * @param currentSymbol - current symbol;
@@ -111,7 +147,7 @@ public class TatarConvertingService extends LatinService {
      * @return converted symbol.
      */
     private String convertV(String currentSymbol, String nextSymbol) {
-        String vowels = rulesHelper.get("vowels").toString();
+        String vowels = rulesHelper.get(VOWELS).toString();
 
         if (null !=nextSymbol && vowels.contains(nextSymbol)) {
             return specificLetters.getProperty(currentSymbol);
@@ -120,8 +156,15 @@ public class TatarConvertingService extends LatinService {
         return cyrillicAlphabet.getProperty(currentSymbol);
     }
 
+    /**
+     * Convert cyrillic "Е" letter to latin by rules of Tatar language.
+     *
+     * @param previousSymbol - previous symbol.
+     * @param currentSymbol - current symbol.
+     * @return converted symbol.
+     */
     private String convertE(String previousSymbol, String currentSymbol) {
-        String vowels = rulesHelper.get("vowels").toString();
+        String vowels = rulesHelper.get(VOWELS).toString();
 
         if (null != previousSymbol && !vowels.contains(previousSymbol)) {
             return specificLetters.getProperty(currentSymbol);
@@ -130,9 +173,17 @@ public class TatarConvertingService extends LatinService {
         return cyrillicAlphabet.getProperty(currentSymbol);
     }
 
-    private String convertGAndK(String previousSymbol, String currentSymbol, String nextSymbol) {
-        String vowels = rulesHelper.get("vowels").toString();
-        String hardVowels = rulesHelper.get("hardVowels").toString();
+    /**
+     * Convert cyrillic "Г" and "К" letter to latin by rules of Tatar language.
+     *
+     * @param previousSymbol - previous symbol.
+     * @param currentSymbol - current symbol.
+     * @param nextSymbol - next symbol.
+     * @return converted symbol.
+     */
+    private String convertGOrK(String previousSymbol, String currentSymbol, String nextSymbol) {
+        String vowels = rulesHelper.get(VOWELS).toString();
+        String hardVowels = rulesHelper.get(HARD_VOWELS).toString();
 
         if (null != nextSymbol && hardVowels.contains(nextSymbol)) {
             return specificLetters.getProperty(currentSymbol);
@@ -148,5 +199,14 @@ public class TatarConvertingService extends LatinService {
 
 
         return cyrillicAlphabet.getProperty(currentSymbol);
+    }
+
+    /**
+     * Convert cyrillic "Я" and "Ю" letter to latin by rules of Tatar language.
+     *
+     * @return converted symbol.
+     */
+    private String convertYaOrYu() {
+        return null;
     }
 }
