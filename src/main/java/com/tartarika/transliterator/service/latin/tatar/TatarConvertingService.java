@@ -23,6 +23,7 @@ import static com.tartarika.transliterator.lang.AppLanguage.TATAR;
 public class TatarConvertingService extends LatinService {
     private static final String VOWELS = "vowels";
     private static final String HARD_VOWELS = "hardVowels";
+    private static final String SOFT_SOUNDS = "softSounds";
 
     /**
      * {@inheritDoc}
@@ -102,7 +103,10 @@ public class TatarConvertingService extends LatinService {
                 break;
             case "Ю":
             case "Я":
-                latinSymbol = convertYaOrYu();
+                latinSymbol = convertYaOrYu(getPreviousSymbol(index, symbols),
+                        currentSymbol,
+                        getNextSymbol(index, symbols),
+                        isAmongNextSymbolsContainsSoftSounds(index, symbols));
                 break;
             default:
         }
@@ -137,6 +141,31 @@ public class TatarConvertingService extends LatinService {
             previousSymbol = symbols.get(index - 1);
         }
         return previousSymbol;
+    }
+
+    /**
+     * Check is among next symbols contains soft sounds.
+     * @param index - current symbol index.
+     * @param symbols - list of the text symbols.
+     * @return {@code true} if soft sounds exist, else return {@code false}
+     */
+    private boolean isAmongNextSymbolsContainsSoftSounds(int index, List<String> symbols) {
+        String softSounds = rulesHelper.getProperty(SOFT_SOUNDS);
+        if (index == symbols.size()) {
+            return false;
+        }
+
+        for (int i = index + 1; i < symbols.size(); i++) {
+            String currentSymbol = symbols.get(i);
+            if (softSounds.contains(currentSymbol)) {
+                return true;
+            }
+
+            if (!cyrillicAlphabet.containsKey(currentSymbol)) {
+                break;
+            }
+        }
+        return false;
     }
 
     /**
@@ -206,7 +235,17 @@ public class TatarConvertingService extends LatinService {
      *
      * @return converted symbol.
      */
-    private String convertYaOrYu() {
-        return null;
+    private String convertYaOrYu(String previousSymbol, String currentSymbol, String nextSymbols, boolean hasSoftSymbols) {
+        String softSounds = rulesHelper.getProperty(SOFT_SOUNDS);
+        boolean isItLastLetterInWord = null == nextSymbols || !cyrillicAlphabet.containsKey(nextSymbols);
+        if (isItLastLetterInWord && softSounds.contains(previousSymbol)) {
+            return specificLetters.getProperty(currentSymbol);
+        }
+
+        if (hasSoftSymbols) {
+            return specificLetters.getProperty(currentSymbol);
+        }
+
+        return cyrillicAlphabet.getProperty(currentSymbol);
     }
 }
