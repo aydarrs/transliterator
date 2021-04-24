@@ -238,7 +238,7 @@ public class TatarConvertingService extends LatinService {
     private String convertYaOrYu(String previousSymbol, String currentSymbol, String nextSymbols, boolean hasSoftSymbols) {
         String softSounds = rulesHelper.getProperty(SOFT_SOUNDS);
         boolean isItLastLetterInWord = null == nextSymbols || !cyrillicAlphabet.containsKey(nextSymbols);
-        if (isItLastLetterInWord && softSounds.contains(previousSymbol)) {
+        if (isItLastLetterInWord && previousSymbol != null && softSounds.contains(previousSymbol)) {
             return specificLetters.getProperty(currentSymbol);
         }
 
