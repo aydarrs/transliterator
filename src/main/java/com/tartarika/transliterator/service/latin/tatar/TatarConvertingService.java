@@ -34,7 +34,7 @@ public class TatarConvertingService extends LatinService {
             throw new SourceTextIsNullException();
         }
 
-        StringJoiner joiner = new StringJoiner("");
+        var joiner = new StringJoiner("");
         List<String> symbols = getSymbols(sourceText);
 
         for (int i = 0; i < symbols.size(); i++) {
@@ -239,6 +239,10 @@ public class TatarConvertingService extends LatinService {
         String softSounds = rulesHelper.getProperty(SOFT_SOUNDS);
         boolean isItLastLetterInWord = null == nextSymbols || !cyrillicAlphabet.containsKey(nextSymbols);
         if (isItLastLetterInWord && previousSymbol != null && softSounds.contains(previousSymbol)) {
+            return specificLetters.getProperty(currentSymbol);
+        }
+
+        if (!hasSoftSymbols && previousSymbol != null && softSounds.contains(previousSymbol)) {
             return specificLetters.getProperty(currentSymbol);
         }
 
