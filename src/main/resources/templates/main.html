@@ -2,19 +2,25 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transliterator</title>
+    <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet">
 </head>
 <body>
+<h1>Tatarça</h1>
 <div>
     <form action="/transliterator/changed" method="post">
         <label for="sourceText"/>
-        <textarea rows="12" cols="60" id="sourceText" name="sourceText" th:text="${source}"></textarea>
+        <textarea rows="9" cols="60" id="sourceText" name="sourceText" th:text="${source}"></textarea>
         <button type="submit">Change</button>
     </form>
 </div>
 <br>
 <div>
-    <textarea rows="12" cols="60" th:text="${converted}"></textarea>
+    <textarea rows="9" cols="60" th:text="${converted}"></textarea>
 </div>
 </body>
 </html>
