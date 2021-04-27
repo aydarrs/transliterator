@@ -226,6 +226,10 @@ public class TatarConvertingService extends LatinService {
             return specificLetters.getProperty(currentSymbol);
         }
 
+        if (null == nextSymbol && null != previousSymbol && hardVowels.contains(previousSymbol)) {
+            return specificLetters.getProperty(currentSymbol);
+        }
+
 
         return cyrillicAlphabet.getProperty(currentSymbol);
     }

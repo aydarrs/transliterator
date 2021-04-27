@@ -1,6 +1,6 @@
 package com.tartarika.transliterator.service;
 
-import com.tartarika.transliterator.service.latin.tatar.TatarConvertingService;
+import com.tartarika.transliterator.service.latin.ILatinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -15,10 +15,10 @@ import java.util.*;
  */
 @Component
 public class GeneralAlphabetService {
-    private TatarConvertingService specificLettersService;
+    private ILatinService specificLettersService;
 
     @Autowired
-    public GeneralAlphabetService(@Qualifier("Tatar") TatarConvertingService service) {
+    public GeneralAlphabetService(@Qualifier("Tatar") ILatinService service) {
         this.specificLettersService = service;
     }
 
