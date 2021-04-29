@@ -25,14 +25,39 @@ body {
 }
 
 .transliterator button {
+    width: 116px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
     padding: 0.5%;
-    border-radius: 6px;
+    border-radius: 4px;
     vertical-align: top;
     margin-top: 4.5%;
-    background-color: #30b227;
+    transition-duration: 0.4s;
+    letter-spacing: 0.11em;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.transliterator button:hover {
+    background-color: #af4cab;
+    color: #fff;
+}
+
+.transliterator button:active {
+    background-color: #af4cab;
+    box-shadow: 0 3px #716d6d;
+    transform: translateY(4px);
 }
 
 textarea {
+    border: 3px solid #af4cab;
+    padding: 3px 3px;
+    border-radius: 4px;
+    font-size: 16px;
     outline: none;
     -moz-appearance: none;
     resize: none;
