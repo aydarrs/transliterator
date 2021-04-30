@@ -13,9 +13,25 @@ body {
     text-rendering: optimizeLegibility;
 }
 
+nav {
+    height: 42px;
+    background-color: #396a3e;
+}
+
+nav h3 {
+    float: right;
+    padding-right: 1.6%;
+    padding-top: 9px;
+    letter-spacing: 0.33em;
+    color: #6a3965;
+    font-size: 20px;
+    font-weight: bold;
+    text-shadow: 0 0 9px white, 0 0 9px white;
+}
+
 #header-title {
-    padding-top: 1.6%;
     margin-left: 1.6%;
+    font-weight: normal;
     letter-spacing: 0.11em;
 }
 
@@ -25,8 +41,9 @@ body {
 }
 
 .transliterator button {
-    width: 116px;
-    background-color: #4CAF50;
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: #396a3e;
     color: #fff;
     border: none;
     text-align: center;
@@ -43,19 +60,18 @@ body {
 }
 
 .transliterator button:hover {
-    background-color: #af4cab;
+    background-color: #6a3965;
     color: #fff;
 }
 
 .transliterator button:active {
-    background-color: #af4cab;
+    background-color: #6a3965;
     box-shadow: 0 3px #716d6d;
     transform: translateY(4px);
 }
 
 textarea {
-    border: 3px solid #af4cab;
-    padding: 3px 3px;
+    border: 3px solid #6a3965;
     border-radius: 4px;
     font-size: 16px;
     outline: none;

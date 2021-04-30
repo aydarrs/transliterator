@@ -10,6 +10,9 @@
     <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet">
 </head>
 <body>
+<nav>
+    <h3>TARTARIKA</h3>
+</nav>
 <header>
     <div>
         <h1 id="header-title">Yazu sistemanı alıştıru</h1>
@@ -18,11 +21,11 @@
 <div class="transliterator">
     <form action="/transliterator/changed" method="post">
         <label for="sourceText"/>
-        <textarea rows="16" cols="60" id="sourceText" name="sourceText" th:text="${source}" placeholder="Bu urında yazığız"></textarea>
-        <button type="submit">ALIŞ</button>
+        <textarea class="col-4" rows="16" id="sourceText" name="sourceText" th:text="${source}" placeholder="Bu urında yazığız"></textarea>
+        <button class="col-1" type="submit">ALIŞ</button>
     </form>
 
-    <textarea rows="16" cols="60" th:text="${converted}" readonly></textarea>
+    <textarea class="col-4" rows="16" th:text="${converted}" readonly></textarea>
 </div>
 </body>
 </html>
