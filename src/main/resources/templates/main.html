@@ -11,7 +11,8 @@
 </head>
 <body>
 <nav>
-    <h3>TARTARIKA</h3>
+    <ion-icon name="menu-sharp" size="large"></ion-icon>
+    <h3>Tartarika</h3>
 </nav>
 <header>
     <div>
@@ -22,8 +23,9 @@
     <form action="/transliterator/changed" method="post">
         <label for="sourceText"/>
         <textarea class="col-4" rows="16" id="sourceText" name="sourceText" th:text="${source}" placeholder="Bu urında yazığız"></textarea>
-        <button id="reset" onclick="clearContents(sourceText)">x</button>
         <button class="col-1" type="submit">ALIŞ</button>
+        <button onclick="clearContents(sourceText)">x</button>
+
     </form>
 
     <textarea class="col-4" rows="16" th:text="${converted}" id="resultText" name="resultText" readonly onabort="clearIfSourceNull()"></textarea>
@@ -34,4 +36,5 @@
         element.value = '';
     }
 </script>
+<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 </html>

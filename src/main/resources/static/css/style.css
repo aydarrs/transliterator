@@ -18,8 +18,15 @@ nav {
     background-color: #396a3e;
 }
 
+nav ion-icon {
+    float: left;
+    margin-left: 1.6%;
+    padding-top: 4px;
+}
+
 nav h3 {
     float: right;
+    text-transform: uppercase;
     padding-right: 1.6%;
     padding-top: 9px;
     letter-spacing: 0.33em;
@@ -96,24 +103,3 @@ textarea {
 .col-10 {width: 83.33%;}
 .col-11 {width: 91.66%;}
 .col-12 {width: 100%;}
-
-.left-area {
-    float: left;
-    width: 40%;
-}
-
-.right-area {
-    float: left;
-    width: 40%;
-}
-
-.middle-area {
-    float: left;
-    width: 20%;
-}
-
-@media screen and (max-width: 800px) {
-    .left-area, .middle-area, .right-area {
-        width: 100%;
-    }
-}
