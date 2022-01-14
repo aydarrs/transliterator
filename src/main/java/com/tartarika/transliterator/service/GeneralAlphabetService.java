@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
-
 /**
  * GeneralAlphabetService.
  * App main service for work with alphabets.
@@ -15,7 +13,7 @@ import java.util.*;
  */
 @Component
 public class GeneralAlphabetService {
-    private ILatinService specificLettersService;
+    private final ILatinService specificLettersService;
 
     @Autowired
     public GeneralAlphabetService(@Qualifier("Tatar") ILatinService service) {
@@ -24,6 +22,7 @@ public class GeneralAlphabetService {
 
     /**
      * Convert cyrillic text to latin.
+     *
      * @param cyrillicText - original text.
      * @return converted latin text.
      */
@@ -33,6 +32,7 @@ public class GeneralAlphabetService {
 
     /**
      * Convert latin text to cyrillic.
+     *
      * @param latinText - original text.
      * @return converted cyrillic text.
      */
